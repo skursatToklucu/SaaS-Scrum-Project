@@ -1,0 +1,113 @@
+﻿@model PropTabTabIK.Entities.Entities.SiteAdmin
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/SuperAdministator/Views/Shared/_Layout.cshtml";
+}
+
+<main>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <h1>Site Yöneticisi Ekle</h1>
+                <div class="separator mb-5"></div>
+                <div class="row">
+                    <div class="col-md-4">
+                        @if (@ViewBag.Hata != null)
+                        {
+                            <div class="alert alert-warning alert-dismissible fade show rounded mb-5" role="alert">
+                                <strong>Başarılı!</strong> Kullanıcı başarıyla eklendi...
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                        }
+
+                        <form enctype="multipart/form-data" asp-action="Create" method="post" id="formclear">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group ">
+                                <label asp-for="Email" class="control-label"></label>
+                                <input required asp-for="Email" class="form-control" type="email" id="emailClear" placeholder="Lütfen Eklenecek Kişinin E-Mail Adresini Giriniz" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            @if (TempData["Msg"] != null)
+                            {
+                                <div class="alert alert-danger alert-dismissible" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <strong>@TempData["Msg"].ToString()</strong>
+                                </div>
+                            }
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label"></label>
+                                <input required asp-for="Name" class="form-control letter" id="nameClear" type="text" placeholder="Lütfen İlgili Kişinin Adını Giriniz" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Surname" class="control-label"></label>
+                                <input required asp-for="Surname" class="form-control letter" id="surnameClear" type="text" placeholder="Lütfen İlgili Kişinin Soyadını Giriniz" />
+                                <span asp-validation-for="Surname" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ProfilPicture" class="control-label"></label>
+                                <input asp-for="ProfilPicture" class="form-control" type="file" name="imagePP" accept="image/*" value="Resim Seç" placeholder="Resim Yok" />
+                                <span asp-validation-for="ProfilPicture" class="text-danger"></span>
+                            </div>
+                            @if (TempData["image"] != null)
+                            {
+                                <div class="alert alert-danger alert-dismissible" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <strong>@TempData["image"].ToString()</strong>
+                                </div>
+                            }
+                            @if (TempData["IsImage"] != null)
+                            {
+                                <div class="alert alert-danger alert-dismissible" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <strong>@TempData["IsImage"].ToString()</strong>
+                                </div>
+                            }
+                            <!-- #region Dnone's -->
+
+                        <div class="form-group d-none">
+                            <label asp-for="SuperAdminID" class="control-label"></label>
+                            <input asp-for="SuperAdminID" class="form-control" value="@ViewBag.SuperAdminID" />
+                        </div>
+                        <div class="form-group d-none">
+                            <label asp-for="Status" class="control-label"></label>s
+                            <input asp-for="Status" class="form-control" />
+                            <span asp-validation-for="Status" class="text-danger"></span>
+                        </div>
+                        <div class="form-group d-none">
+                            <label asp-for="Role" class="control-label"></label>s
+                            <input asp-for="Role" class="form-control" />
+                            <span asp-validation-for="Role" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group d-none">
+                            <label asp-for="Password" class="control-label"></label>
+                            <input asp-for="Password" class="form-control" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group d-none">
+                            <label asp-for="ErrorLogin" class="control-label"></label>
+                            <input asp-for="ErrorLogin" class="form-control" />
+                            <span asp-validation-for="ErrorLogin" class="text-danger"></span>
+                        </div>
+
+                        <!-- #endregion -->
+                        <div class="form-group">
+                            <input type="submit" value="Oluştur" class="btn btn-primary" />
+                        </div>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

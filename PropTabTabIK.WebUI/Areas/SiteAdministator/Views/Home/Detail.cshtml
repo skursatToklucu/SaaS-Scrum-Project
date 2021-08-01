@@ -1,0 +1,37 @@
+﻿@model PropTabTabIK.Entities.SideEntities.Contract
+@{
+    ViewData["Title"] = "Sözleşme Detay";
+}
+<main>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="col-9 col-lg-9 col-md-9 col-sm-9 col-xl-9 align-items-center mx-auto justify-content-center">
+                    <h1><i class="text-muted mx-auto align-content-center d-inline-block">Sözleşme Detayı</i></h1>
+                </div>
+
+
+                <div class="card col-9 col-lg-9 col-md-9 col-sm-9 col-xl-9 align-items-center mx-auto justify-content-center">
+                    <div class="position-absolute card-top-buttons">
+                        <button class="btn btn-outline-white icon-button ">
+                            <i class="simple-icon-pencil"></i>
+                        </button>
+                    </div>
+                    <i class="simple-icon-pencil mx-auto mt-5 align-content-center d-inline-block"></i>
+
+                    <div class="card-body">
+                        <p class="text-muted text-small mb-2">#@Model.GetHashCode()</p>
+                        <p class="mb-3">
+                            @Model.Content
+                        </p>
+                        <p class="text-muted text-small mb-2">Sözleşme Süresi</p>
+                        <p class="mb-3">
+                            @Model.StartDate - @Model.EndDate
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</main>

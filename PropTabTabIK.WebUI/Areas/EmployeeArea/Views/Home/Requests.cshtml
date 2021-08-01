@@ -1,0 +1,148 @@
+﻿@model PropTabTabIK.Entities.SideEntities.AllowRequest
+
+@{
+    ViewData["Title"] = "Requests";
+    List<AllowRequest> allowRequests = ViewBag.AllowRequests;
+}
+
+
+
+<h1>İzinler</h1>
+
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h1 class="text-left">Anasayfa</h1>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="AllowRequest">
+                            <button class="prop-button primary float-right " color="primary" data-toggle="modal" data-target="#exampleModal">İZİN TALEP ET</button>
+                            @if (TempData["Hata"] != null)
+                            {
+                                <div class="alert alert-danger alert-dismissible" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <strong>@TempData["Hata"].ToString()</strong>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="separator mb-5"></div>
+
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="card-body">
+                            <table class="data-table data-table-scrollable responsive nowrap" data-order="[[ 1, &quot;desc&quot; ]]">
+                                <thead>
+                                    <tr>
+                                        <th>Başlangıç </th>
+                                        <th>Bitiş </th>
+                                        <th>Süre</th>
+                                        <th>İzin Türü</th>
+                                        <th>Açıklama</th>
+                                        <th>Oluşturulma Tarihi</th>
+                                        <th>Durum </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in allowRequests)
+                                    {
+                                        <tr>
+                                            <td>@item.StartDate.ToShortDateString()</td>
+                                            <td>@item.EndDate.ToShortDateString() </td>
+                                            <td>@item.TotalAllowTime Gün</td>
+                                            <td>@item.AllowType</td>
+                                            <td>@item.Description</td>
+                                            <td>@item.IssueDate.ToShortDateString()</td>
+                                            @switch (item.State)
+                                            {
+                                                case PropTabTabIK.Core.Enum.State.Pending:
+                                                    <td class="text-center">
+                                                        <p class="badge badge-pill badge-secondary"><a href="#allowmodal" class="open-allowmodal" data-toggle="modal" data-id="@item.ID" id="allowrequest-item" data-target="#allowmodal">Beklemede</a></p>
+                                                    </td>
+                                                    break;
+                                                case PropTabTabIK.Core.Enum.State.Confirmed:
+                                                    <td class="text-center">
+                                                        <p class="badge badge-pill badge-success"><a class="open-allowmodal" data-toggle="modal" data-id="@item.ID" data-target="#allowmodal">Onaylandı</a></p>
+                                                    </td>
+                                                    break;
+                                                case PropTabTabIK.Core.Enum.State.Denied:
+                                                    <td class="text-center">
+                                                        <p class="badge badge-pill badge-danger"><a class="open-allowmodal" data-toggle="modal" data-id="@item.ID" data-target="#allowmodal">Reddedildi</a></p>
+                                                    </td>
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div class="modal" tabindex="-1" role="dialog" id="exampleModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="simple-icon-plane"></i>&nbsp;İzin günü</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Requests" method="post">
+                <div class="modal-body">
+                    <span>İzin Türü</span>
+                    <select asp-for="AllowType" class="form-control  select2-single" asp-items="Html.GetEnumSelectList<PropTabTabIK.Core.Enum.AllowType>()"></select>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label asp-for="StartDate" class="request-label"><span>Başlangıç Tarihi<br /></span></label>
+                        </div>
+                        <div class="col-lg-6">
+                            <label asp-for="EndDate" class="request-label"><span>Bitiş Tarihi<br /></span></label>
+                        </div>
+                        <div class="col-lg-6 d-none">
+                            <input asp-for="State" value="@PropTabTabIK.Core.Enum.State.Pending" />
+                            <input asp-for="CompanyDescription" />
+                            <input asp-for="EmployeeID" value="@ViewBag.EmployeeID" />
+                            <input asp-for="AllowTime" />
+                            <input asp-for="TotalAllowTime" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="input-daterange input-group" id="kt_datepicker_5">
+                                <input type="text" class="form-control deneme" data-date-format="dd/mm/yyyy" name="start" asp-for="StartDate" value="" />
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="simple-icon-options"></i></span>
+                                </div>
+                                <input type="text" class="form-control deneme" data-date-format="dd/mm/yyyy" name="end" asp-for="EndDate" />
+                            </div>
+                        </div>
+                    </div>
+                    <label asp-for="Description" class="request-label"><span>Açıklama<br /></span></label>
+                    <textarea asp-for="Description" rows="2" class="form-control"></textarea>
+
+                </div>
+                <div class="modal-footer">
+                    <button color="dark-outlined" type="button" class="prop-button dark-outlined close" data-dismiss="modal" aria-label="Close"> İptal</button>
+                    <button color="primary" type="submit" class="prop-button primary"> Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

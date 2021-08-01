@@ -1,0 +1,186 @@
+﻿@model IEnumerable<PropTabTabIK.Entities.SideEntities.Package>
+
+@{
+    ViewData["Title"] = "Paket Sayfası";
+}
+
+
+<main>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="mb-1">
+
+
+                    <div class="text-zero top-right-button-container">
+
+                        <button type="button" class="btn btn-primary mb-5" data-toggle="modal"
+                                data-backdrop="static" data-target="#exampleModalRight">
+                            Paket Ekle
+                        </button>
+                        @if (TempData["delete"] != null)
+                        {
+                            <div class="alert alert-danger alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <strong>@TempData["delete"].ToString()</strong>
+                            </div>
+                        }
+                        <div class="modal fade modal-right show" id="exampleModalRight" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalRight" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Yeni Paket Ekle</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        @if (TempData["Msg"] != null || TempData["Msg2"] != null || TempData["Msg3"] != null || TempData["Msg4"] != null)
+                                        {
+                                            @if (TempData["Msg2"] != null)
+                                            {
+                                                <div class="alert alert-danger rounded" role="alert">
+                                                    <strong>@TempData["Msg2"].ToString()</strong>
+                                                </div>
+                                            }
+                                            @if (TempData["Msg3"] != null)
+                                            {
+                                                <div class="alert alert-danger rounded" role="alert">
+                                                    <strong>@TempData["Msg3"].ToString()</strong>
+                                                </div>
+                                            }
+                                            @if (TempData["Msg4"] != null)
+                                            {
+                                                <div class="alert alert-danger rounded" role="alert">
+                                                    <strong>@TempData["Msg4"].ToString()</strong>
+                                                </div>
+                                            }
+                                            @if (TempData["Msg"] != null)
+                                            {
+                                                <div class="alert alert-danger rounded" role="alert">
+                                                    <strong>@TempData["Msg"].ToString()</strong>
+                                                </div>
+                                            }
+                                        }
+
+                                        <form asp-area="SiteAdministator" asp-action="Create" asp-controller="Package" name="ModalForm" enctype="multipart/form-data" method="POST" id="exampleFormTopLabels" class="tooltip-right-bottom">
+                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                            <div class="form-group">
+                                                <label>Paket Adı</label>
+                                                <input type="text" name="Name" pattern="[a-zA-Z0-ğĞ-şŞ-çÇ-iİ-üÜ\s]+" title="Sadece harf girişi yapınız..." class="form-control" placeholder="Paket Adını Yazınız..." required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Fiyatı</label>
+                                                <input type="text" name="Price" class="form-control" pattern="\d*" title="Sadece sayısal değer girilebilir..." placeholder="Paket Fiyatını Yazınız..." required>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>Paket Süresi</label>
+                                                <input type="text" name="ExpireTime" class="form-control" pattern="\d*" title="Sadece sayısal değer girilebilir..." placeholder="Paket Süresini Yazınız(Ay olarak giriş yapınız)..." required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Kullanıcı Sayısı</label>
+                                                <input type="text" name="EmployeeCount" class="form-control" pattern="\d*" title="Sadece sayısal değer girilebilir..." placeholder="Paket Kullanıcı Sayısını Yazınız..." required>
+                                            </div>
+                                            <div class="card mt-4 mb-4">
+                                                <div class="card-body">
+                                                    <div class="form-group">
+                                                        <label name="Photo" for="exampleInputEmail1">Resim Ekleyin</label>
+                                                        <input type="file" name="Photo" class="form-control" required />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-outline-primary"
+                                                        data-dismiss="modal">
+                                                    İptal
+                                                </button>
+                                                <button type="submit" class="btn btn-primary">Ekle</button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="separator mt-5"></div>
+            </div>
+        </div>
+        <div class="row list disable-text-selection">
+            @foreach (var item in Model)
+            {
+
+                <div class="col-xl-3 col-lg-4 col-12 col-sm-6 mb-4">
+                    <div class="card">
+                        <div class="position-relative packagePhoto">
+                            <img class="card-img-top" src="~/img/package/@item.Photo" alt="Card image cap">
+                            <a data-path="@Url.Action("Delete", "Package", new { id = item.ID })" data-toggle="modal" data-target="#exampleModal2" style="cursor:pointer;" class="delete-item" id="delete-item">
+                                <span class="badge badge-pill badge-theme-1 position-absolute badge-top-left">
+                                    SİL
+                                </span>
+                            </a>
+                            @*<a asp-area="SiteAdminArea" asp-controller="Package" asp-action="Update" asp-route-id="@item.ID" type="button">
+                                    <span class="badge badge-pill badge-secondary position-absolute badge-top-left-2">
+                                        GÜNCELLE
+                                    </span>
+                                </a>*@
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-12">
+                                    <a>
+                                        <p class="list-item-heading mb-4 pt-1">
+                                            Paket Adı:
+                                            <b> @item.Name</b>
+                                        </p>
+                                        <p class="list-item-heading mb-4 pt-1">
+                                            Paket Fiyatı:
+                                            <b> @item.Price ₺</b>
+                                        </p>
+                                        <p class="list-item-heading mb-4 pt-1">
+                                            Paket Süresi:
+                                            <b> @item.ExpireTime Ay</b>
+                                        </p>
+                                        <p class="list-item-heading mb-4 pt-1">
+                                            Kullanıcı Sayısı:
+                                            <b> @item.EmployeeCount Kişi</b>
+                                        </p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </div>
+</main>
+
+<div class="modal" tabindex="-1" role="dialog" id="exampleModal2">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Paket Silme İşlemi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Silmek istediğinizden emin misiniz?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="delete" type="submit" class="btn btn-primary delete">Evet</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hayır</button>
+            </div>
+        </div>
+    </div>
+</div>
+                }

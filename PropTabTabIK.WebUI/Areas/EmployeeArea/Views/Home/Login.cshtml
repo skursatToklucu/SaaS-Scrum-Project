@@ -1,0 +1,77 @@
+﻿@model PropTabTabIK.Entities.Entities.Employee
+@{
+    ViewData["Title"] = "Çalışan Giriş";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login Sayfası</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="~/fonts/iconsmind-s/css/iconsminds.css" />
+    <link rel="stylesheet" href="~/fonts/simple-line-icons/css/simple-line-icons.css" />
+    <link rel="stylesheet" href="~/css/vendor/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/vendor/bootstrap.rtl.only.min.css" />
+    <link href="~/css/dore.light.blue.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/vendor/bootstrap-float-label.min.css" />
+    <link rel="stylesheet" href="~/css/main.css" />
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+
+</head>
+@*show-spinner*@
+<body class="background ">
+    <div class="fixed-background"></div>
+    <main>
+        <div class="container">
+            <div class="row h-100">
+                <div class="col-12 col-md-10 mx-auto my-auto">
+                    <div class="card auth-card">
+                        <div class="position-relative image-side">
+
+                            <p class=" text-white h2">BİLGİLERİNİZİ GİREREK GİRİŞ YAPINIZ...</p>
+
+                        </div>
+                        <div class="form-side">
+                            <a href="">
+                                <span class="logo-single"></span>
+                            </a>
+                            <h6 class="mb-4">Login</h6>
+                            <form asp-area="EmployeeArea" asp-action="Login" asp-controller="Home" method="POST">
+                                <label class="form-group has-float-label mb-4">
+                                    <input asp-for="Email" class="form-control" required="" />
+                                    <span>E-mail</span>
+                                </label>
+
+                                <label class="form-group has-float-label mb-4">
+                                    <input asp-for="Password" type="password" class="form-control" required="" />
+                                    <span>Password</span>
+                                </label>
+                                <div class="d-flex mb-5 align-items-center">
+                                    <label class="field-validation-error">@ViewBag.Hata</label>
+                                    <span class="ml-auto"><a class="forgot-pass" asp-action="ForgotPassword" asp-area="EmployeeArea" asp-controller="Employee">Parolamı Unuttum</a></span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <div class="g-recaptcha" data-sitekey="6LeVJe8aAAAAANqIDS1jgeszRurH3gaW1k6iHmGz"></div>
+                                </div>
+                                <label class="field-validation-error">@ViewBag.HataCaptcha</label>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <button class="btn btn-primary btn-lg btn-shadow" type="submit">GİRİŞ</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="~/js/vendor/jquery-3.3.1.min.js"></script>
+    <script src="~/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="~/js/dore.script.js"></script>
+    <script src="~/js/scripts.js"></script>
+</body>
+
+</html>

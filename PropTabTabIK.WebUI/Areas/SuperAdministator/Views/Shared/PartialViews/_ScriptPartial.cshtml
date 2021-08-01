@@ -1,0 +1,115 @@
+﻿<!-- #region name -->
+
+
+<script src="~/js/vendor/cropper.min.js"></script>
+<script src="~/js/vendor/jquery-3.3.1.min.js"></script>
+<script src="~/js/vendor/bootstrap.bundle.min.js"></script>
+<script src="~/js/vendor/Chart.bundle.min.js"></script>
+<script src="~/js/vendor/chartjs-plugin-datalabels.js"></script>
+<script src="~/js/vendor/moment.min.js"></script>
+<script src="~/js/vendor/fullcalendar.min.js"></script>
+<script src="~/js/vendor/datatables.min.js"></script>
+<script src="~/js/vendor/perfect-scrollbar.min.js"></script>
+<script src="~/js/vendor/bootstrap-notify.min.js"></script>
+<script src="~/js/vendor/owl.carousel.min.js"></script>
+<script src="~/js/vendor/progressbar.min.js"></script>
+<script src="~/js/vendor/jquery.barrating.min.js"></script>
+<script src="~/js/vendor/select2.full.js"></script>
+<script src="~/js/vendor/nouislider.min.js"></script>
+<script src="~/js/vendor/bootstrap-datepicker.js"></script>
+<script src="~/js/vendor/Sortable.js"></script>
+<script src="~/js/vendor/dropzone.min.js"></script>
+<script src="~/js/vendor/mousetrap.min.js"></script>
+<script src="~/js/vendor/typeahead.bundle.js"></script>
+<script src="~/js/dore.script.js"></script>
+<script src="~/js/scripts.single.theme.js"></script>
+<script src="~/js/vendor/jquery.contextMenu.min.js"></script>
+<script src="~/js/scripts.js"></script>
+<script src="~/js/vendor/bootstrap-tagsinput.min.js"></script>
+<script src="~/js/vendor/jquery.smartWizard.min.js"></script>
+<script src="~/js/vendor/baguetteBox.min.js"></script>
+<script src="~/js/vendor/jquery.autoellipsis.js"></script>
+<script src="~/js/vendor/cropper.min.js"></script>
+<script src="~/js/vendor/jquery.smartWizard.min.js"></script>
+<script src="~/js/vendor/jquery.validate/jquery.validate.min.js"></script>
+<script src="~/js/vendor/jquery.validate/additional-methods.min.js"></script>
+<script src="~/js/dore-plugins/select.from.library.js"></script>
+<script src="~/js/scripts.single.theme.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script>
+    $(document).ready(function () {
+        document.getElementById("emailClear").value = "";
+        document.getElementById("nameClear").value = "";
+        document.getElementById("surnameClear").value = "";
+        $(".letter").keypress(function (evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            //Bu şartımız ile harf girildiği takdirde true olarak geri dönüş sağlıyoruz.
+            //Türkçe karakter desteği için ascii kod şartları aşağıya eklenmiştir.
+            if (((charCode <= 93 && charCode >= 65) || (charCode <= 122 && charCode >= 97) || charCode == 8) || charCode == 350 || charCode == 351 || charCode == 304 || charCode == 286 || charCode == 287 || charCode == 231 || charCode == 199 || charCode == 305 || charCode == 214 || charCode == 246 || charCode == 220 || charCode == 252 || charCode == 32) {
+                return true;
+            }
+            return false;
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $(".updateLetter").keypress(function (evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            //Bu şartımız ile harf girildiği takdirde true olarak geri dönüş sağlıyoruz.
+            //Türkçe karakter desteği için ascii kod şartları aşağıya eklenmiştir.
+            if (((charCode <= 93 && charCode >= 65) || (charCode <= 122 && charCode >= 97) || charCode == 8) || charCode == 350 || charCode == 351 || charCode == 304 || charCode == 286 || charCode == 287 || charCode == 231 || charCode == 199 || charCode == 305 || charCode == 214 || charCode == 246 || charCode == 220 || charCode == 252 || charCode == 32) {
+                return true;
+            }
+            return false;
+        });
+    });
+</script>
+<script>
+    var path_to_delete;
+
+    $(".delete-item").click(function (e) {
+        path_to_delete = $(this).data('path');
+    });
+
+    $('#delete').click(function () {
+        window.location = path_to_delete;
+    });
+</script>
+
+<script>
+    function DeleteRow(e) {
+        var id = e;
+        if (confirm("Do You Confirm?!!!") == true) {
+            var parent = $(this).parent('td').parent('tr');
+            ajax({
+                url: "/Leader/DeleteArt",
+                data: {
+                    id: e,
+                },
+                type: "Post",
+                dataType: "Json",
+                success: function (result) {
+                    if (result.Success) {
+                        alert("it's deleted");
+                        GetAndReplaceData(id);
+                        //parent.remove();
+                    }
+                },
+                error: function () {
+                    alert("error!");
+                }
+            });
+        }
+        else { }
+    }
+
+    function GetAndReplaceData(rowID) {
+        $.get("/Leader/GetArt", function (data, status) {
+            var rowId = rowID;
+            rowId.val("");
+            rowId.val(result);
+
+        });
+    }
+</script>

@@ -1,0 +1,83 @@
+﻿@model PropTabTabIK.Entities.SideEntities.MailTemplate
+
+@{
+    ViewData["Title"] = "UpdateMail";
+    Layout = "~/Areas/SiteAdministator/Views/Shared/_Layout.cshtml";
+
+    List<CompanyAdmin> companies = ViewBag.Companies;
+}
+
+<main>
+
+    <h4>Mail Şablonu</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-9 card mx-auto ">
+            <form asp-action="SendingMail" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="ID" />
+                @if (TempData["success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <strong>@TempData["success"].ToString()</strong>
+                    </div>
+                }
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label">Mail Adı</label>
+                    <input required asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label">Kime</label>
+                    <select name="mailAddress" class="form-control select2-single">
+                        @foreach (var item in companies)
+                        {
+                            <option value="@item.ID" class="form-control">
+                                @item.CompanyName | @item.FullName
+                            </option>
+                        }
+
+                    </select>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Subject" class="control-label">Konu</label>
+                    <input required asp-for="Subject" class="form-control" />
+                    <span asp-validation-for="Subject" class="text-danger"></span>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body ">
+                        <h5 class="mb-4">İçerik </h5>
+                        <textarea asp-for="Content" id="ckEditorClassic"></textarea>
+                    </div>
+                </div>
+                <div class="form-group d-none">
+                    <label asp-for="Status" class="control-label"></label>
+                    <input asp-for="Status" class="form-control" />
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+                <div class="form-group d-none">
+                    <label asp-for="UserID" class="control-label"></label>
+                    <input asp-for="UserID" value="@ViewBag.SiteAdminID" class="form-control" />
+                    <span asp-validation-for="UserID" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Gönder" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">Geri Dön</a>
+    </div>
+</main>
+<script src="~/js/vendor/ckeditor5-build-classic/ckeditor.js"></script>
+<script>
+    // Replace the <textarea id="editor1"> with a CKEditor 4
+    // instance, using default configuration.
+    CKEDITOR.replace('ckEditorClassic');
+</script>

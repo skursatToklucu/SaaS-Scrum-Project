@@ -1,0 +1,227 @@
+﻿@model PropTabTabIK.Entities.Entities.Employee
+
+@{
+    ViewData["Title"] = "EditEmployee";
+}
+<script>
+    /*  ==========================================
+        SHOW UPLOADED IMAGE
+    * ========================================== */
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#imageResultLogo')
+                    .attr('src', e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $(function () {
+        $('#uploadLogo').on('change', function () {
+            readURL(input);
+        });
+    });
+    function readPPURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#imageResultPP')
+                    .attr('src', e.target.result);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $(function () {
+        $('#uploadPP').on('change', function () {
+            readPPURL(input);
+        });
+    });
+    /*  ==========================================
+        SHOW UPLOADED IMAGE NAME
+    * ========================================== */
+    var input = document.getElementById('uploadLogo');
+    var infoArea = document.getElementById('upload-labelLogo');
+
+    input.addEventListener('change', showFileName);
+    function showFileName(event) {
+        var input = event.srcElement;
+        var fileName = input.files[0].name;
+        infoArea.textContent = 'Dosya Adı: ' + fileName;
+    }
+</script>
+<main>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <h1>Güncelleme </h1>
+                <div class="separator mb-5"></div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12 mx-auto">
+                            <form asp-area="CompanyAdministator" asp-controller="Home" asp-action="EditEmployee" enctype="multipart/form-data" method="post">
+                                <div class="col-md-4 float-left">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <div class="form-group">
+                                        <label asp-for="Name" class="control-label"></label>
+                                        <input asp-for="Name" class="form-control" />
+                                        <span asp-validation-for="Name" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Surname" class="control-label"></label>
+                                        <input asp-for="Surname" class="form-control" />
+                                        <span asp-validation-for="Surname" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Email" class="control-label"></label>
+                                        <input asp-for="Email" class="form-control" />
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+                                    @if (TempData["emailCheck"] != null)
+                                    {
+                                        <div class="alert alert-danger alert-dismissible" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <strong>@TempData["emailCheck"].ToString()</strong>
+                                        </div>
+                                    }
+                                    <div class="form-group">
+                                        <label asp-for="Position" class="control-label"></label>
+                                        <input asp-for="Position" class="form-control" />
+                                        <span asp-validation-for="Position" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Salary" class="control-label"></label>
+                                        <input asp-for="Salary" type="number" min="2800" step="100" value="@Model.Salary" id="exampleInputAmount" class="form-control" placeholder="Price">&nbsp;₺
+                                        <span asp-validation-for="Salary" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="AllowCount" class="control-label"></label>
+                                        <input asp-for="AllowCount" class="form-control" />
+                                        <span asp-validation-for="AllowCount" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group d-none">
+                                        <label asp-for="AdvancePaymentRight" class="control-label"></label>
+                                        <input asp-for="AdvancePaymentRight" class="form-control" />
+                                        <span asp-validation-for="AdvancePaymentRight" class="text-danger"></span>
+                                    </div>
+                                    <!-- #region Dnone -->
+
+                                    <div class="form-group d-none">
+                                        <label asp-for="StartDate" class="control-label"></label>
+                                        <input asp-for="StartDate" class="form-control" type="datetime-local" />
+                                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group d-none">
+                                        <label asp-for="EndDate" class="control-label"></label>
+                                        <input asp-for="EndDate" class="form-control" type="datetime-local" />
+                                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group d-none">
+                                        <label asp-for="BirthDate" class="control-label"></label>
+                                        <input asp-for="BirthDate" class="form-control" />
+                                        <span asp-validation-for="BirthDate" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group d-none">
+                                        <label asp-for="TCNo" class="control-label"></label>
+                                        <input asp-for="TCNo" class="form-control" />
+                                        <span asp-validation-for="TCNo" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group d-none">
+                                        <label asp-for="IBAN" class="control-label"></label>
+                                        <input asp-for="IBAN" class="form-control" />
+                                        <span asp-validation-for="IBAN" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-group d-none">
+                                        <label asp-for="CompanyAdminID" class="control-label"></label>
+                                        <input asp-for="CompanyAdminID" class="form-control" />
+                                        <span asp-validation-for="CompanyAdminID" class="text-danger"></span>
+                                    </div>
+                                    <input type="hidden" asp-for="ID" />
+                                    <div class="form-group d-none">
+                                        <label asp-for="Status" class="control-label"></label>
+                                        <input asp-for="Status" class="form-control" />
+                                        <span asp-validation-for="Status" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group d-none">
+                                        <label asp-for="Role" class="control-label"></label>
+                                        <input asp-for="Role" class="form-control" />
+                                        <span asp-validation-for="Role" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-group d-none">
+                                        <label asp-for="Password" class="control-label"></label>
+                                        <input asp-for="Password" class="form-control" />
+                                        <span asp-validation-for="Password" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-group d-none">
+                                        <label asp-for="ErrorLogin" class="control-label"></label>
+                                        <input asp-for="ErrorLogin" class="form-control" />
+                                        <span asp-validation-for="ErrorLogin" class="text-danger"></span>
+                                    </div>
+                                    @if (TempData["IsImage"] != null)
+                                    {
+                                        <div class="alert alert-danger alert-dismissible" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <strong>@TempData["IsImage"].ToString()</strong>
+                                        </div>
+                                    }
+                                    @if (TempData["image"] != null)
+                                    {
+                                        <div class="alert alert-danger alert-dismissible" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            <strong>@TempData["image"].ToString()</strong>
+                                        </div>
+                                    }
+                                    <div class="form-group">
+                                        <input type="submit" value="Kaydet" class="btn btn-primary" />
+                                    </div>
+                                </div>
+                                <div class="row py-4">
+                                    <div class="col-lg-6 pic">
+                                        <div class="col-lg-12">
+                                            <!-- Upload image input-->
+                                            <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm">
+                                                <input asp-for="ProfilPicture" name="imagePP" id="uploadPP" type="file" onchange="readPPURL(this);" class="form-control border-0 upload">
+                                                <label id="upload-labelPP" for="uploadPP" class="font-weight-light text-muted upload-label">Yönetici Fotoğrafı Seçin.</label>
+                                                <div class="input-group-append">
+                                                    <label for="uploadPP" class="btn btn-light m-0 rounded-pill px-4"> <i class="fa fa-cloud-upload mr-2 text-muted"></i><small class="text-uppercase font-weight-bold text-muted">Yönetici Fotoğrafı Seçin.</small></label>
+                                                </div>
+                                            </div>
+                                            <!-- Uploaded image area-->
+                                            <p class="font-italic text-black-50 text-center">Yönetici Fotoğrafı</p>
+                                            <div class="image-area mt-4">
+                                                <img id="imageResultPP" src="@Model.ProfilPicture" alt="" class="img-fluid rounded shadow-sm mx-auto d-block">
+                                                @*<a asp-route-id="@Model.ID" id="@Model.ID" name="@Model.ID" value="@Model.ID" onclick="DeleteRow(@Model.ID)" type="button">
+                                                        <span class="badge badge-pill badge-theme deleteImg position-absolute   badge-top-left">
+                                                            <i class="simple-icon-close "></i>
+                                                        </span>
+                                                    </a>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- #endregion -->
+
+                            </form>
+                            <div>
+                                <a asp-action="Index">AnaSayfaya Dön</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>

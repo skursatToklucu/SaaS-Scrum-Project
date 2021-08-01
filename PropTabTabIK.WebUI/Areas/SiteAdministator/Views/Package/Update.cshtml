@@ -1,0 +1,82 @@
+﻿@model PropTabTabIK.Entities.SideEntities.Package
+@{
+    ViewData["Title"] = "Paket Güncelleme";
+}
+
+
+<main>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-6 col-lg-6 col-xl-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+
+                        <form id="exampleFormTopLabels" class="tooltip-right-bottom" asp-area="SiteAdminArea" asp-action="Update" asp-controller="Package" enctype="multipart/form-data" method="POST">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="ID" />
+                            <div class="form-group has-float-label">
+                                <span>Paket Adı</span>
+                                <input class="form-control" asp-for="Name" name="Name">
+                            </div>
+                            @if (ViewBag.Name != null)
+                            {
+                                <div class="alert alert-danger rounded" role="alert">
+                                    <strong>@ViewBag.Name</strong>
+                                </div>
+                            }
+                            @*<label class="field-validation-error">@ViewBag.Name</label>*@
+                            <div class="form-group has-float-label">
+                                <span>Paket Fiyatı</span>
+                                <input class="form-control" asp-for="Price" name="Price">
+                            </div>
+                            @if (ViewBag.Price != null)
+                            {
+                                <div class="alert alert-danger rounded" role="alert">
+                                    <strong>@ViewBag.Price</strong>
+                                </div>
+                            }
+                            @*<label class="field-validation-error">@ViewBag.Price</label>*@
+                            <div class="form-group has-float-label">
+                                <span>Paket Süresi(Ay)</span>
+                                <input class="form-control" asp-for="ExpireTime" name="ExpireTime">
+                            </div>
+                            @if (ViewBag.ExpireTime != null)
+                            {
+                                <div class="alert alert-danger rounded" role="alert">
+                                    <strong>@ViewBag.ExpireTime</strong>
+                                </div>
+                            }
+
+                            @*<label class="field-validation-error">@ViewBag.ExpireTime</label>*@
+                            <div class="form-group has-float-label">
+                                <span>Kullanıcı Sayısı</span>
+                                <input class="form-control" asp-for="EmployeeCount" name="EmployeeCount">
+                            </div>
+                            @if (ViewBag.EmployeeCount != null)
+                            {
+                                <div class="alert alert-danger rounded" role="alert">
+                                    <strong>@ViewBag.EmployeeCount</strong>
+                                </div>
+                            }
+
+                            <div class="card mt-4 mb-4">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label name="Photo" for="exampleInputEmail1">Resim</label>
+                                        <input type="file" name="Photo" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-end">
+                                <input type="submit" value="Güncelle" class="btn btn-outline-primary mb-3">
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>

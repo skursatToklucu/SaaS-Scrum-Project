@@ -1,0 +1,254 @@
+﻿@model IEnumerable<AllowRequest>
+
+@{
+    ViewData["Title"] = "İzinler";
+
+    //List<AllowRequest> Allows = Model.Item1;
+    List<Employee> employees = ViewBag.Employee;
+}
+
+<main>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <h1>Anasayfa</h1>
+
+                <div class="separator mb-5"></div>
+
+                <div class="col-md-12 col-lg-12 col-12 mb-12 justify-content-center align-items-center">
+                    <div class="card">
+                        <div class="card-header">
+                            <ul class="nav nav-tabs card-header-tabs " role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="first-tab" data-toggle="tab" href="#first" role="tab" aria-controls="first" aria-selected="true">Onay Bekleyenler</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="second-tab" data-toggle="tab" href="#second" role="tab" aria-controls="second" aria-selected="false">Onaylananlar</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="third-tab" data-toggle="tab" href="#third" role="tab" aria-controls="third" aria-selected="false">Reddedilenler</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content">
+                                <div class="tab-pane fade active show col-md-12 col-lg-12 col-12" id="first" role="tabpanel" aria-labelledby="first-tab">
+
+                                    <div class="row">
+                                        <div class="col-12" id="accordion">
+
+                                            @foreach (var item in Model)
+                                            {
+                                                if (item.State == PropTabTabIK.Core.Enum.State.Pending)
+                                                {
+
+
+                                                    <div class="card d-flex mb-3">
+                                                        <div class="d-flex flex-grow-1 min-width-zero" data-toggle="collapse" data-target="#collapseOne"
+                                                             aria-expanded="true" aria-controls="collapseOne">
+                                                            <button class="card-body btn btn-empty list-item-heading text-left text-one">
+                                                                @employees.Where(x => x.ID == item.EmployeeID).Select(x => x.FullName).FirstOrDefault()
+                                                            </button>
+                                                        </div>
+
+                                                        <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                                                            <div class="card-body accordion-content">
+                                                                <p><strong>Açıklama</strong></p>
+                                                                <p>@item.Description</p>
+                                                                <br />
+
+                                                                @switch (item.AllowType)
+                                                                {
+                                                                    case PropTabTabIK.Core.Enum.AllowType.annual:
+                                                                        <p><strong>Yıllık İzni </strong>için <strong>@item.RemainingAllowTime</strong> gün izin hakkı kaldı.</p>
+                                                                        break;
+                                                                    case PropTabTabIK.Core.Enum.AllowType.bereavement:
+                                                                        <p><strong>Vefat İzni </strong>için <strong>@item.RemainingAllowTime</strong> gün izin hakkı kaldı.</p>
+                                                                        break;
+                                                                    case PropTabTabIK.Core.Enum.AllowType.maternity:
+                                                                        <p><strong>Doğum İzni </strong>için <strong>@item.RemainingAllowTime</strong> gün izin hakkı kaldı.</p>
+                                                                        break;
+                                                                    case PropTabTabIK.Core.Enum.AllowType.disease:
+                                                                        <p><strong>Hastalık İzni </strong>için <strong>@item.RemainingAllowTime</strong> gün izin hakkı kaldı.</p>
+                                                                        break;
+                                                                    case PropTabTabIK.Core.Enum.AllowType.military:
+                                                                        <p><strong>Askerlik İzni </strong>için <strong>@item.RemainingAllowTime</strong> gün izin hakkı kaldı.</p>
+                                                                        break;
+                                                                    default:
+                                                                        break;
+                                                                }
+
+                                                                @switch (item.AllowType)
+                                                                {
+                                                                    case PropTabTabIK.Core.Enum.AllowType.annual:
+                                                                        <strong>Talep Edilen İzin :</strong> <i>Yıllık İzni </i>
+                                                                        break;
+                                                                    case PropTabTabIK.Core.Enum.AllowType.bereavement:
+                                                                        <strong>Talep Edilen İzin :</strong> <i>Vefat İzni </i>
+                                                                        break;
+                                                                    case PropTabTabIK.Core.Enum.AllowType.maternity:
+                                                                        <strong>Talep Edilen İzin :</strong> <i>Doğum İzni </i>
+                                                                        break;
+                                                                    case PropTabTabIK.Core.Enum.AllowType.disease:
+                                                                        <strong>Talep Edilen İzin :</strong> <i>Hastalık İzni </i>
+                                                                        break;
+                                                                    case PropTabTabIK.Core.Enum.AllowType.military:
+                                                                        <strong>Talep Edilen İzin :</strong> <i>Askerlik İzni </i>
+                                                                        break;
+                                                                    default:
+                                                                        break;
+                                                                }@item.AllowTime gün
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <a class="btn btn-sm btn-outline-danger col-md-1 col-lg-1 col-1 ml-5" asp-controller="Home" asp-action="DeleteAllow" asp-route-id="@item.ID">Sil</a>
+                                                            <a class="btn btn-sm btn-outline-primary col-md-1 col-lg-1 col-1" asp-controller="Home" asp-action="ConfirmedAllow" asp-route-id="@item.ID">Onayla</a>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="tab-pane fade" id="second" role="tabpanel" aria-labelledby="second-tab">
+                                    @foreach (var item in Model)
+                                    {
+                                        if (item.State == PropTabTabIK.Core.Enum.State.Confirmed)
+                                        {
+                                            <div class="card d-flex mb-3">
+                                                <div class="d-flex flex-grow-1 min-width-zero" data-toggle="collapse" data-target="#collapseOne"
+                                                     aria-expanded="true" aria-controls="collapseOne">
+                                                    <button class="card-body btn btn-empty list-item-heading text-left text-one">
+                                                        @employees.Where(x => x.ID == item.EmployeeID).Select(x => x.FullName).FirstOrDefault()
+                                                    </button>
+                                                </div>
+                                                <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                                                    <div class="card-body accordion-content">
+                                                        <p><strong>Açıklama</strong></p>
+                                                        <p>@item.Description</p>
+                                                        <br />
+
+                                                        @switch (item.AllowType)
+                                                        {
+                                                            case PropTabTabIK.Core.Enum.AllowType.annual:
+                                                                <p><strong>Yıllık İzni </strong>için <strong>@item.RemainingAllowTime</strong> gün izin hakkı kaldı.</p>
+                                                                break;
+                                                            case PropTabTabIK.Core.Enum.AllowType.bereavement:
+                                                                <p><strong>Vefat İzni </strong>için <strong>@item.RemainingAllowTime</strong> gün izin hakkı kaldı.</p>
+                                                                break;
+                                                            case PropTabTabIK.Core.Enum.AllowType.maternity:
+                                                                <p><strong>Doğum İzni </strong>için <strong>@item.RemainingAllowTime</strong> gün izin hakkı kaldı.</p>
+                                                                break;
+                                                            case PropTabTabIK.Core.Enum.AllowType.disease:
+                                                                <p><strong>Hastalık İzni </strong>için <strong>@item.RemainingAllowTime</strong> gün izin hakkı kaldı.</p>
+                                                                break;
+                                                            case PropTabTabIK.Core.Enum.AllowType.military:
+                                                                <p><strong>Askerlik İzni </strong>için <strong>@item.RemainingAllowTime</strong> gün izin hakkı kaldı.</p>
+                                                                break;
+                                                            default:
+                                                                break;
+                                                        }
+
+                                                        @switch (item.AllowType)
+                                                        {
+                                                            case PropTabTabIK.Core.Enum.AllowType.annual:
+                                                                <strong>Talep Edilen İzin :</strong> <i>Yıllık İzni </i>
+                                                                break;
+                                                            case PropTabTabIK.Core.Enum.AllowType.bereavement:
+                                                                <strong>Talep Edilen İzin :</strong> <i>Vefat İzni </i>
+                                                                break;
+                                                            case PropTabTabIK.Core.Enum.AllowType.maternity:
+                                                                <strong>Talep Edilen İzin :</strong> <i>Doğum İzni </i>
+                                                                break;
+                                                            case PropTabTabIK.Core.Enum.AllowType.disease:
+                                                                <strong>Talep Edilen İzin :</strong> <i>Hastalık İzni </i>
+                                                                break;
+                                                            case PropTabTabIK.Core.Enum.AllowType.military:
+                                                                <strong>Talep Edilen İzin :</strong> <i>Askerlik İzni </i>
+                                                                break;
+                                                            default:
+                                                                break;
+                                                        }@item.AllowTime gün
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+
+                                </div>
+                                <div class="tab-pane fade" id="third" role="tabpanel" aria-labelledby="third-tab">
+                                    @foreach (var item in Model)
+                                    {
+                                        if (item.State == PropTabTabIK.Core.Enum.State.Denied)
+                                        {
+
+                                            <div class="card d-flex mb-3">
+                                                <div class="d-flex flex-grow-1 min-width-zero" data-toggle="collapse" data-target="#collapseOne"
+                                                     aria-expanded="true" aria-controls="collapseOne">
+                                                    <button class="card-body btn btn-empty list-item-heading text-left text-one">
+                                                        @employees.Where(x => x.ID == item.EmployeeID).Select(x => x.FullName).FirstOrDefault()
+                                                    </button>
+                                                </div>
+
+                                                <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                                                    <div class="card-body accordion-content">
+                                                        <p><strong>Açıklama</strong></p>
+                                                        <p>@item.Description</p>
+                                                        <br />
+
+                                                        @switch (item.AllowType)
+                                                        {
+                                                            case PropTabTabIK.Core.Enum.AllowType.annual:
+                                                                <p><strong>Yıllık İzni </strong>için <strong>@item.RemainingAllowTime</strong> gün izin hakkı kaldı.</p>
+                                                                break;
+                                                            case PropTabTabIK.Core.Enum.AllowType.bereavement:
+                                                                <p><strong>Vefat İzni </strong>için <strong>@item.RemainingAllowTime</strong> gün izin hakkı kaldı.</p>
+                                                                break;
+                                                            case PropTabTabIK.Core.Enum.AllowType.maternity:
+                                                                <p><strong>Doğum İzni </strong>için <strong>@item.RemainingAllowTime</strong> gün izin hakkı kaldı.</p>
+                                                                break;
+                                                            case PropTabTabIK.Core.Enum.AllowType.disease:
+                                                                <p><strong>Hastalık İzni </strong>için <strong>@item.RemainingAllowTime</strong> gün izin hakkı kaldı.</p>
+                                                                break;
+                                                            case PropTabTabIK.Core.Enum.AllowType.military:
+                                                                <p><strong>Askerlik İzni </strong>için <strong>@item.RemainingAllowTime</strong> gün izin hakkı kaldı.</p>
+                                                                break;
+                                                            default:
+                                                                break;
+                                                        }
+
+                                                        @switch (item.AllowType)
+                                                        {
+                                                            case PropTabTabIK.Core.Enum.AllowType.annual:
+                                                                <strong>Talep Edilen İzin :</strong> <i>Yıllık İzni </i>
+                                                                break;
+                                                            case PropTabTabIK.Core.Enum.AllowType.bereavement:
+                                                                <strong>Talep Edilen İzin :</strong> <i>Vefat İzni </i>
+                                                                break;
+                                                            case PropTabTabIK.Core.Enum.AllowType.maternity:
+                                                                <strong>Talep Edilen İzin :</strong> <i>Doğum İzni </i>
+                                                                break;
+                                                            case PropTabTabIK.Core.Enum.AllowType.disease:
+                                                                <strong>Talep Edilen İzin :</strong> <i>Hastalık İzni </i>
+                                                                break;
+                                                            case PropTabTabIK.Core.Enum.AllowType.military:
+                                                                <strong>Talep Edilen İzin :</strong> <i>Askerlik İzni </i>
+                                                                break;
+                                                            default:
+                                                                break;
+                                                        }@item.AllowTime gün
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

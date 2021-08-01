@@ -1,0 +1,313 @@
+﻿@{
+    ViewData["Title"] = "Anasayfa";
+
+    List<AllowRequest> allowRequests = ViewBag.AllowRequests;
+    List<AdvancePayment> advancePayments = ViewBag.PaymentRequests;
+    Employee employee = ViewBag.Employee;
+}
+
+<main>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <h1>Anasayfa</h1>
+
+                <div class="separator mb-5"></div>
+
+                <div class="col-md-12 col-lg-12 col-12 mb-12 justify-content-center align-items-center">
+                    <div class="card">
+                        <div class="card-header">
+                            <ul class="nav nav-tabs card-header-tabs " role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="first-tab" data-toggle="tab" href="#first" role="tab" aria-controls="first" aria-selected="true">Genel</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="second-tab" data-toggle="tab" href="#second" role="tab" aria-controls="second" aria-selected="false">İzinler</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="third-tab" data-toggle="tab" href="#third" role="tab" aria-controls="third" aria-selected="false">Avans</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="fourth-tab" data-toggle="tab" href="#fourth" role="tab" aria-controls="fourth" aria-selected="false">Harcamalar</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content">
+                                <div class="tab-pane fade active show col-md-12 col-lg-12 col-12" id="first" role="tabpanel" aria-labelledby="first-tab">
+                                    @if (allowRequests != null)
+                                    {
+                                        @foreach (var item in allowRequests)
+                                        {
+                                            <div class="col-xl-4 col-lg-4 col-5 col-md-5 col-sm-5 float-left">
+                                                <div class="card mb-4 progress-banner">
+                                                    <div class="card-body justify-content-between d-flex flex-row align-items-center">
+                                                        <div>
+                                                            <i class="simple-icon-plane mr-2 text-white align-text-bottom d-inline-block"></i>
+                                                            <div>
+                                                                @switch (item.AllowType)
+                                                                {
+                                                                    case PropTabTabIK.Core.Enum.AllowType.annual:
+                                                                        <p class="lead text-white">Yıllık İzni</p>
+
+                                                                        break;
+                                                                    case PropTabTabIK.Core.Enum.AllowType.bereavement:
+                                                                        <p class="lead text-white">Vefat İzni</p>
+                                                                        break;
+                                                                    case PropTabTabIK.Core.Enum.AllowType.maternity:
+                                                                        <p class="lead text-white">Doğum İzni</p>
+                                                                        break;
+                                                                    case PropTabTabIK.Core.Enum.AllowType.disease:
+                                                                        <p class="lead text-white">Hastalık İzni</p>
+                                                                        break;
+                                                                    case PropTabTabIK.Core.Enum.AllowType.military:
+                                                                        <p class="lead text-white">Askerlik İzni</p>
+                                                                        break;
+                                                                    default:
+                                                                        break;
+                                                                }
+
+
+                                                                @switch (item.State)
+                                                                {
+                                                                    case PropTabTabIK.Core.Enum.State.Pending:
+                                                                        <p class="text-small text-white">Beklemede</p>
+
+                                                                        break;
+                                                                    case PropTabTabIK.Core.Enum.State.Confirmed:
+                                                                        <p class="text-small text-white">Onaylandı</p>
+                                                                        break;
+                                                                    case PropTabTabIK.Core.Enum.State.Denied:
+                                                                        <p class="text-small text-white">Reddedildi</p>
+                                                                        break;
+                                                                    default:
+                                                                        break;
+                                                                }
+                                                                <p class="text-small text-white">Talep Edilen ve Kalan İzin Günleri</p>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            @if (item.State == PropTabTabIK.Core.Enum.State.Pending)
+                                                            {
+                                                                <div role="progressbar"
+                                                                     class="progress-bar-circle progress-bar-banner position-relative"
+                                                                     data-color="white" data-trail-color="rgba(255,255,255,0.2)"
+                                                                     aria-valuenow="@item.AllowTime" aria-valuemax="@employee.AllowCount" data-show-percent="false">
+                                                                    @*aria-valuenow talep edilen izin aria-valuemax toplam izin hakkı*@
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {<div role="progressbar"
+                                                                  class="progress-bar-circle progress-bar-banner position-relative"
+                                                                  data-color="white" data-trail-color="rgba(255,255,255,0.2)"
+                                                                  aria-valuenow="@item.AllowTime" aria-valuemax="@item.TotalAllowTime" data-show-percent="false">
+                                                                    @*aria-valuenow talep edilen izin aria-valuemax toplam izin hakkı*@
+                                                                </div>
+                                                            }
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                                <div class="tab-pane fade" id="second" role="tabpanel" aria-labelledby="second-tab">
+                                    @*<table class="data-table data-table-scrollable responsive nowrap">*@
+                                    <table class="data-table data-tables-pagination responsive nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th>Başlangıç </th>
+                                                <th>Bitiş </th>
+                                                <th>Süre</th>
+                                                <th>İzin Türü</th>
+                                                <th>Açıklama</th>
+                                                <th>Oluşturulma Tarihi</th>
+                                                <th>Durum </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in allowRequests)
+                                            {
+                                                <tr>
+                                                    <td>@item.StartDate.ToShortDateString()</td>
+                                                    <td>@item.EndDate.ToShortDateString() </td>
+                                                    <td>@item.TotalAllowTime</td>
+                                                    <td>@item.AllowType</td>
+                                                    <td>@item.Description</td>
+                                                    <td>@item.Description</td>
+
+                                                    @switch (item.State)
+                                                    {
+                                                        case PropTabTabIK.Core.Enum.State.Pending:
+                                                            <td class="text-center">
+                                                                <p class="badge badge-pill badge-secondary"><a href="#allowmodal" class="open-allowmodal" data-toggle="modal" data-id="@item.ID" id="allowrequest-item" data-target="#allowmodal">Beklemede</a></p>
+                                                            </td>
+                                                            break;
+                                                        case PropTabTabIK.Core.Enum.State.Confirmed:
+                                                            <td class="text-center">
+                                                                <p class="badge badge-pill badge-success"><a class="open-allowmodal" data-toggle="modal" data-id="@item.ID" data-target="#allowmodal">Onaylandı</a></p>
+                                                            </td>
+                                                            break;
+                                                        case PropTabTabIK.Core.Enum.State.Denied:
+                                                            <td class="text-center">
+                                                                <p class="badge badge-pill badge-danger"><a class="open-allowmodal" data-toggle="modal" data-id="@item.ID" data-target="#allowmodal">>Reddedildi</a></p>
+                                                            </td>
+                                                            break;
+                                                        default:
+                                                            break;
+                                                    }
+
+
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                                <div class="tab-pane fade" id="third" role="tabpanel" aria-labelledby="third-tab">
+                                    <table class="data-table data-tables-pagination responsive nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Tip
+                                                </th>
+                                                <th>
+                                                    Talep Edilen Miktar
+                                                </th>
+                                                <th>
+                                                    Acıklama
+                                                </th>
+                                                <th>
+                                                    Toplam Hak
+                                                </th>
+
+                                                <th>
+                                                    Oluşturulma Tarihi
+                                                </th>
+                                                <th>
+                                                    Durum
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in advancePayments)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @item.AdvancePaymentType
+                                                    </td>
+                                                    <td>
+                                                        @item.Amount
+                                                    </td>
+                                                    <td>
+                                                        @item.Description
+                                                    </td>
+                                                    <td>
+                                                        @employee.AdvancePaymentRight
+                                                    </td>
+                                                    <td>
+                                                        @item.IssueDate.ToShortDateString()
+                                                    </td>
+                                                    <td>
+                                                        @item.State
+                                                    </td>
+                                                </tr>
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="tab-pane fade" id="fourth" role="tabpanel" aria-labelledby="fourth-tab">
+                                    <h6 class="mb-4">Cheesecake with Chocolate Cookies and Cream Biscuits</h6>
+                                    <button type="button" class="btn btn-sm btn-outline-primary">Edit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<div class="modal" tabindex="-1" role="dialog" id="allowmodal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="simple-icon-plane"></i>&nbsp;İzin günü</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Requests" method="post">
+                <div class="modal-body">
+                    <input type="hidden" name="allowid" id="allowid" />
+                    <input type="text" name="bookId" id="bookId" value="" />
+                    <div class="text-center">
+                        <img alt="@ViewBag.FullName" src="@ViewBag.ProfilPicture" width="100" />
+                    </div>
+                    <hr />
+                    <table class="table prop-table" id="deneme">
+                        <tbody>
+                            @foreach (var item in allowRequests)
+                            {
+                                switch (item.State)
+                                {
+                                    case PropTabTabIK.Core.Enum.State.Pending:
+                                        <tr>
+                                            <td class="nowrap">Durum </td>
+                                            <td class="text-right"><span class="badge badge-pill badge-secondary">Beklemede</span></td>
+                                        </tr>
+                                        break;
+                                    case PropTabTabIK.Core.Enum.State.Confirmed:
+                                        <tr>
+                                            <td class="nowrap">Durum </td>
+                                            <td class="text-right"><span class="badge badge-pill badge-success">Onaylandı</span></td>
+                                        </tr>
+                                        break;
+                                    case PropTabTabIK.Core.Enum.State.Denied:
+                                        <tr>
+                                            <td class="nowrap">Durum </td>
+                                            <td class="text-right"><span class="badge badge-pill badge-danger">Reddedildi</span></td>
+                                        </tr>
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                <tr>
+                                    <td class="nowrap">İzin Türü </td>
+                                    <td class="text-right">@item.AllowType</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="nowrap">Süre </td>
+                                    <td class="text-right">@item.TotalAllowTime</td>
+                                </tr>
+                                <tr>
+                                    <td class="nowrap">Başlangıç </td>
+                                    <td class="text-right">@item.StartDate.ToShortDateString()</td>
+                                </tr>
+                                <tr>
+                                    <td class="nowrap">Bitiş </td>
+                                    <td class="text-right">@item.EndDate.ToShortDateString()</td>
+                                </tr>
+                                <tr>
+                                    <td class="nowrap">Oluşturulma Tarihi</td>
+                                    <td class="text-right">@item.IssueDate</td>
+                                </tr>
+
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="modal-footer">
+                    <button color="dark-outlined" type="button" class="prop-button dark-outlined close" data-dismiss="modal" aria-label="Close"> TAMAM</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

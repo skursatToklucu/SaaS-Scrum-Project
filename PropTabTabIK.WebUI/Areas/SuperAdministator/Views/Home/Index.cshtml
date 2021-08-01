@@ -1,0 +1,81 @@
+﻿@model IEnumerable<PropTabTabIK.Entities.Entities.SiteAdmin>
+
+@{
+    ViewData["Title"] = "Index";
+
+}
+
+<main>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <h1>Aktif Çalışan Site Adminlerinin Listesi</h1>
+                <div class="separator mb-5"></div>
+                <div class="row" style="margin-top:50px">
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <tr class="text-center">
+                                <th class="d-none">ID</th>
+                                <th>Profil Resmi</th>
+                                <th>Isim</th>
+                                <th>Soyisim</th>
+                                <th>Email</th>
+                                <th>İŞLEMLER</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="d-none">@item.ID</td>
+                                    @if (item.ProfilPicture == "" || item.ProfilPicture == null)
+                                    {
+                                        <td align="center"> <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" style="width:70px; height:auto" /></td>
+                                    }
+                                    else
+                                    {
+                                        <td align="center"> <img src="@item.ProfilPicture" style="width:70px; height:auto" /></td>
+                                    }
+
+                                    <td align="center">@item.Name</td>
+                                    <td align="center">@item.Surname</td>
+                                    <td align="center">@item.Email</td>
+                                    <td align="center">
+                                        <a class="btn btn-outline-primary" asp-area="SuperAdministator" asp-controller="Home" asp-action="Update" asp-route-id="@item.ID">Güncelle</a>
+                                        @*@{
+                                                string url = string.Format($"/Delete/{item.ID}");
+                                            }*@
+                                        <a data-path="@Url.Action("Delete", "Home", new { id = item.ID })" data-toggle="modal" data-target="#exampleModal" id="delete-item" class="btn btn-outline-danger delete-item" style="cursor:pointer;"> Sil</a>
+                                    </td>
+                                </tr>
+
+                            }
+                        </tbody>
+                    </table>
+                    <a class="btn btn-outline-primary" asp-controller="Home" asp-action="Create">Ekle</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div class="modal" tabindex="-1" role="dialog" id="exampleModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Site Yöneticisi Silme İşlemi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Silmek istediğinizden emin misiniz?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="delete" type="submit" class="btn btn-primary delete">Evet</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hayır</button>
+            </div>
+        </div>
+    </div>
+</div>

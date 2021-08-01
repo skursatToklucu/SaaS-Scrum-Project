@@ -1,0 +1,82 @@
+﻿@model PropTabTabIK.Entities.Entities.SiteAdmin
+@{ ViewData["Title"] = "Login";
+                Layout = null;
+
+                List<SiteAdmin> siteAdmins = ViewBag.SiteAdmins; }
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://unpkg.com/bootstrap-show-password@1.2.1/dist/bootstrap-show-password.min.js"></script>
+
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="~/fonts/icomoon/style.css">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<!-- Style -->
+<link rel="stylesheet" href="~/css/style.css">
+
+<div class="d-lg-flex half">
+    <div class="bg order-1 order-md-2 logo">
+        <img src="~/img/PropTabTabLogo.png" class="logo" />
+    </div>
+    <div class="contents order-2 order-md-1">
+
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-md-7">
+                    <h3><strong>Giriş Yap</strong></h3>
+                    <p class="mb-4">ProbTabTab I.K</p>
+
+                    <form asp-area="SiteAdministator" asp-action="Login" asp-controller="Home" method="post">
+                        <div class="form-group first">
+                            <label for="E-Posta">E-Posta</label>
+                            <input type="text" class="form-control" placeholder="E-Posta Adresi" asp-for="Email">
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group last mb-3">
+                            <label for="Şifre">Password</label>
+                            <input type="password" class="form-control " placeholder="Şifre" data-toggle="password" asp-for="Password">
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                       
+                        </div>
+                        @*<div class="form-group d-none">
+                                <input class="form-control" asp-for="ID" value="@siteAdmins.AsQueryable().Where(x => x.Email == Model.Email).Select(x => x.ID).FirstOrDefault()" />
+                            </div>*@
+                        <div class="d-flex mb-5 align-items-center">
+                            <label class="field-validation-error">@ViewBag.Hata</label>
+                            <label class="field-validation-error">@ViewBag.Password</label>
+                            <span class="ml-auto"><a class="forgot-pass" asp-action="ForgotPassword" asp-controller="Home">Parolamı Unuttum</a></span>
+                        </div>
+
+                        <input type="submit" value="Giriş Yap" class="btn btn-block btn-primary">
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<style>
+    .input-group {
+        margin-bottom: 5px;
+    }
+</style>
+<script>
+    $(function () {
+        $('#password').password()
+    })
+</script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/main.js"></script>

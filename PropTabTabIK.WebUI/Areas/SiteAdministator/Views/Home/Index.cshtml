@@ -1,0 +1,353 @@
+﻿@model Tuple<List<CompanyAdmin>, List<Package>, List<MailTemplate>, List<Employee>>
+
+@{
+    ViewData["Title"] = "Index";
+
+    //List<Package> closeMemberships = Model.Item2.AsQueryable().Where(x => (DateTime.Now.Day - x.ExpireTime) < 15).ToList();
+
+}
+
+<main>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="separator mb-5"></div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h4 class="mb-4 text-center text-uppercase font-weight-bolder ">Yönetim Paneli</h4>
+                        <div class="card" id="Piechart_div"></div>
+                        <a asp-area="SiteAdministator" asp-controller="Crud" asp-action="CreateCompanyAdmin" class="btn btn-outline-success float-right mt-2 mr-3">Yeni Müşteri Ekle</a>
+                        <div id="accordion">
+                            <div class="border">
+                                <button class="btn btn-link mb-3" data-toggle="collapse" data-target="#collapseOne"
+                                        aria-expanded="true" aria-controls="collapseOne">
+                                    Müşterilerim
+                                </button>
+                                <a data-toggle="modal" data-backdrop="static" data-target="#exampleModalRight" class="btn btn-outline-primary btn-multiple-state delete-company float-right mt-2 mr-3" id="successButton">
+                                    <div class="spinner d-inline-block">
+                                        <div class="bounce1"></div>
+                                        <div class="bounce2"></div>
+                                        <div class="bounce3"></div>
+                                    </div>
+                                    <span class="icon success" data-toggle="tooltip" data-placement="top" title="" data-original-title="Everything went right!" aria-describedby="tooltip981519">
+                                        <i class="simple-icon-check"></i>
+                                    </span>
+                                    <span class="icon fail" data-toggle="tooltip" data-placement="top" title="" data-original-title="Something went wrong!">
+                                        <i class="simple-icon-exclamation"></i>
+                                    </span>
+                                    <span class="label">Mail Gonder&nbsp;&#9993;</span>
+                                </a>
+                                <div id="collapseOne" class="collapse show " data-parent="#accordion">
+                                    <div class="p-4">
+                                        <div class="row mb-4">
+                                            <div class="col-12">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <table class="data-table data-table-scrollable responsive nowrap"
+                                                               data-order="[[ 1, &quot;desc&quot; ]]">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Şirket Logosu</th>
+                                                                    <th class="text-center">Şirket Adı</th>
+                                                                    <th class="text-center">Kapasıte / Paket Oranı</th>
+                                                                    <th class="text-center">Hesap Durumu</th>
+                                                                    <th class="text-center">Şirket Yöneticisi</th>
+                                                                    <th class="text-center">İşlemler</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+
+                                                                @foreach (var item in Model.Item1)
+                                                                {
+                                                                    <tr>
+                                                                        <td>
+                                                                            @if (item.CompanyLogo == "" || item.CompanyLogo == null)
+                                                                            {
+                                                                                <a class="d-flex" href="#">
+                                                                                    <img alt="Thumbnail" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/No-logo.svg/271px-No-logo.svg.png" class="list-thumbnail responsive border-0 card-img-left index-logo">
+                                                                                </a>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <a class="d-flex" href="#">
+                                                                                    <img alt="Thumbnail" src="@item.CompanyLogo" class="list-thumbnail responsive border-0 card-img-left index-logo">
+                                                                                </a>
+                                                                            }
+                                                                        </td>
+                                                                        <td class="text-center">
+                                                                            <p class="list-item-heading">@item.CompanyName</p>
+                                                                        </td>
+                                                                        <td class="text-center">
+                                                                            <p class="text-muted">@Model.Item2.AsQueryable().Where(x => x.ID == item.PackageID).Select(x => x.Name).FirstOrDefault()</p>
+                                                                            <div class="progress">
+                                                                                <div class="progress-bar" role="progressbar" aria-valuenow="@Model.Item4.Where(x => x.CompanyAdminID == item.ID).ToList().Count()" aria-valuemin="0" aria-valuemax="@Model.Item2.AsQueryable().Where(x => x.ID == item.PackageID).Select(x => x.EmployeeCount).FirstOrDefault()" style="width: 66%;"></div>
+                                                                            </div>
+                                                                            <p class="text-muted">@Model.Item4.Where(x => x.CompanyAdminID == item.ID).ToList().Count() / @Model.Item2.AsQueryable().Where(x => x.ID == item.PackageID).Select(x => x.EmployeeCount).FirstOrDefault()</p>
+                                                                        </td>
+                                                                        @switch (item.Status)
+                                                                        {
+                                                                            case PropTabTabIK.Core.Enum.Status.None:
+                                                                                <td class="text-center">
+                                                                                    <p class="badge badge-pill badge-secondary">Yeni</p>
+                                                                                </td>
+                                                                                break;
+                                                                            case PropTabTabIK.Core.Enum.Status.Active:
+                                                                                <td class="text-center">
+                                                                                    <p class="badge badge-pill badge-success">Aktif</p>
+                                                                                </td>
+                                                                                break;
+                                                                            case PropTabTabIK.Core.Enum.Status.Deactive:
+                                                                                <td class="text-center">
+                                                                                    <p class="badge badge-pill badge-dark">Pasif</p>
+                                                                                </td>
+                                                                                break;
+                                                                            case PropTabTabIK.Core.Enum.Status.Deleted:
+                                                                                <td class="text-center">
+                                                                                    <p class="badge badge-pill badge-danger">Askıya Alındı</p>
+                                                                                </td>
+                                                                                break;
+                                                                            default:
+                                                                                break;
+
+                                                                        }
+                                                                        <td class="text-center">
+                                                                            @item.FullName
+                                                                        </td>
+
+
+                                                                        <td class="text-center">
+                                                                            <a asp-area="SiteAdministator" asp-controller="Crud" asp-action="Update" asp-route-id="@item.ID" class="btn btn-outline-secondary mb-1">Güncelle</a>
+                                                                            @switch (item.Status)
+                                                                            {
+                                                                                case PropTabTabIK.Core.Enum.Status.None:
+                                                                                    <a asp-area="SiteAdministator" asp-controller="Crud" asp-action="ChangeStatus" asp-route-id="@item.ID" class="btn btn-outline-success mb-1">Aktif et</a>
+                                                                                    break;
+                                                                                case PropTabTabIK.Core.Enum.Status.Active:
+                                                                                    <a asp-area="SiteAdministator" asp-controller="Crud" asp-action="ChangeStatus" asp-route-id="@item.ID" class="btn btn-outline-dark mb-1">Pasif Yap</a>
+                                                                                    break;
+                                                                                case PropTabTabIK.Core.Enum.Status.Deactive:
+                                                                                    <a asp-area="SiteAdministator" asp-controller="Crud" asp-action="ChangeStatus" asp-route-id="@item.ID" class="btn btn-outline-success mb-1">Aktif et</a>
+                                                                                    break;
+                                                                                case PropTabTabIK.Core.Enum.Status.Deleted:
+                                                                                    <a asp-area="SiteAdministator" asp-controller="Crud" asp-action="ChangeStatus" asp-route-id="@item.ID" class="btn btn-outline-success mb-1">Aktif et</a>
+                                                                                    break;
+                                                                                default:
+                                                                                    break;
+                                                                            }
+                                                                            <a title="Sil" data-path="@Url.Action("Delete", "Crud", new { id = item.ID })" data-toggle="modal" data-target="#exampleModal" id="delete-item" class="btn btn-outline-danger mb-1 delete-item delete-company" style="cursor:pointer;">&#10008;</a>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                }
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="border">
+                                <button class="btn btn-link collapsed mb-3" data-toggle="collapse"
+                                        data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    Mail Şablonlarım
+                                </button>
+                                <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                                    <div class="p-4">
+                                        <div class="card mb-4">
+                                            <div class="card-body">
+                                                <a asp-area="SiteAdministator" asp-controller="Crud" asp-action="CreateMailTemplate" class="btn btn-success mb-1 float-right">Sablon Oluştur</a> <div class="row mb-4">
+
+                                                    <div class="col-lg-6 col-md-12 mb-4">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <h5 class="card-title">Mailler</h5>
+
+                                                                <table class="table table-striped">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th scope="col">#</th>
+                                                                            <th scope="col" style="width:150px;">Mail Adı</th>
+                                                                            <th scope="col" style="width:150px;">Mail Konu</th>
+                                                                            <th scope="col">Mail İçerik</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @foreach (var item in Model.Item3.AsQueryable().Where(x => x.Status == PropTabTabIK.Core.Enum.Status.Active).ToList())
+                                                                        {
+
+                                                                            <tr>
+                                                                                <th scope="row">@item.GetHashCode()</th>
+                                                                                <td>@item.Name</td>
+                                                                                <td>@item.Subject</td>
+                                                                                <td class="mail-content-length">@Html.Raw(item.Content)</td>
+                                                                                <td><a asp-area="SiteAdministator" asp-controller="Crud" asp-action="UpdateMail" asp-route-id="@item.ID" class="btn btn-outline-primary">Güncelle</a></td>
+                                                                                <td><a data-path="@Url.Action("DeleteMail", "Crud", new { id = item.ID })" data-toggle="modal" data-target="#exampleModal" id="delete-item" class="btn btn-outline-danger mb-1 delete-item delete-company" style="cursor:pointer;">Sil</a></td>
+                                                                            </tr>
+
+                                                                        }
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border">
+                            <button class="btn btn-link collapsed mb-3" data-toggle="collapse"
+                                    data-target="#collapseThree" aria-expanded="false"
+                                    aria-controls="collapseThree">
+                                Paketlerim
+                            </button>
+                            <div id="collapseThree" class="collapse" data-parent="#accordion">
+                                <div class="p-4">
+                                    <div class="card mb-4">
+                                        <div class="card-body">
+                                            <div class="row equal-height-container">
+
+                                                <div class="col-12">
+                                                    <h5 class="mb-4">Paket Fiyatları</h5>
+                                                </div>
+
+                                                @foreach (var item in Model.Item2)
+                                                {
+
+                                                    <div class="col-md-12 col-lg-4 mb-4 col-item">
+                                                        <div class="card">
+                                                            <div class="card-body pt-5 pb-5 d-flex flex-lg-column flex-md-row flex-sm-row flex-column">
+                                                                <div class="price-top-part">
+                                                                    <i class="iconsminds-male large-icon"></i>
+                                                                    <h5 class="mb-0 font-weight-semibold color-theme-1 mb-4">@item.Name</h5>
+                                                                    <p class="text-large mb-2 text-default">@item.Price</p>
+                                                                    <p class="text-muted text-small">Sirket/Aylık</p>
+                                                                </div>
+                                                                <div class="pl-3 pr-3 pt-3 pb-0 d-flex price-feature-list flex-column flex-grow-1">
+                                                                    <ul class="list-unstyled">
+                                                                        <li>
+                                                                            <p class="mb-0 ">
+                                                                                @item.EmployeeCount Kişilik
+                                                                            </p>
+                                                                        </li>
+                                                                        <li>
+                                                                            <p class="mb-0 ">
+                                                                                @item.ExpireTime Ay
+                                                                            </p>
+                                                                        </li>
+                                                                    </ul>
+                                                                    <div class="text-center">
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <table class="columns">
+                <tr>
+                    <td><div id="Piechart_div" style="border: 1px solid #ccc"></div></td>
+                    <td><div id="columnchart_div" style="border: 1px solid #ccc"></div></td>
+                </tr>
+            </table>
+            <table style="width: 100%; margin-top:40px;">
+                <thead>
+                    <tr>
+                        <th style="text-align:left; font-size: 10px; color:#8f8f8f; padding-bottom: 15px;">
+                            Şirket İsmi
+                        </th>
+                        <th style="text-align:left; font-size: 10px; color:#8f8f8f; padding-bottom: 15px;">
+                            Paket İsmi
+                        </th>
+                        <th style="text-align:right; font-size: 10px; color:#8f8f8f; padding-bottom: 15px;">
+                            Bitiş Tarihi
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    </div>
+</main>
+
+
+<div class="modal" tabindex="-1" role="dialog" id="exampleModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Site Yöneticisi Silme İşlemi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Silmek istediğinizden emin misiniz?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="delete" type="submit" class="btn btn-primary delete">Evet</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hayır</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade modal-right" id="exampleModalRight" tabindex="-1" role="dialog" aria-labelledby="exampleModalRight" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a class="modal-title" asp-area="SiteAdministator" asp-controller="Crud" asp-action="CreateMailTemplate">Add New</a>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="col-12 list">
+                    @foreach (var item in Model.Item3)
+                    {
+
+                        <div class="card d-flex flex-row mb-3">
+                            <div class="d-flex flex-grow-1 min-width-zero">
+                                <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
+                                    <a title="@item.Subject" class="list-item-heading mb-0 truncate w-40 w-xs-100 " href="Pages.Product.Detail.html">
+                                        @item.Name
+                                    </a>
+                                    <div class="w-15 w-xs-100 mr-4">
+                                        <a asp-area="SiteAdministator" asp-controller="Crud" asp-action="SendingMail" asp-route-id="@item.ID" class="badge badge-pill badge-secondary">GÖNDER</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    }
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Geri Dön</button>
+
+            </div>
+        </div>
+    </div>
+</div>

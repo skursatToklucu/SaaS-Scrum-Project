@@ -1,0 +1,133 @@
+﻿@model PropTabTabIK.Entities.Entities.SiteAdmin
+
+@{
+    ViewData["Title"] = "Update";
+    Layout = "~/Areas/SuperAdministator/Views/Shared/_Layout.cshtml";
+}
+
+<main>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <h1>Güncelleme</h1>
+                <div class="separator col-12"></div>
+                <form asp-action="Update" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-2">
+                            @if (Model.ProfilPicture == "")
+                            {
+                                <td align="center"> <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" style="width:200px" /></td>
+                            }
+                            <img src="@Model.ProfilPicture" style="width:200px; border-block:2px solid black" />
+                            <div class="file-upload mb-5">
+
+                                <!--place upload image/icon first !-->
+                                <img src="https://i.stack.imgur.com/dy62M.png" />
+                                <!--place input file last !-->
+                                <input asp-for="ProfilPicture" class="form-control" type="file" name="imagePP" accept="image/*" value="Resim Seç" />
+                            </div>
+                            <div>
+                                <button type="submit" asp-route-id="@Model.ID" asp-controller="Home" asp-action="PictureRemove" asp-route-area="SuperAdministator" class="btn btn-outline-danger">Resmi Kaldır</button>
+                            </div>
+                            @if (TempData["image"] != null)
+                            {
+                                <div class="alert alert-danger alert-dismissible" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <strong>@TempData["image"].ToString()</strong>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-md-3">
+
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input type="hidden" asp-for="ID" />
+                            <div class="form-group">
+                                <label asp-for="Email" class="control-label"></label>
+                                <input required asp-for="Email" class="form-control" type="email" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            @if (TempData["emailCheck"] != null)
+                            {
+                                <div class="alert alert-danger alert-dismissible" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <strong>@TempData["emailCheck"].ToString()</strong>
+                                </div>
+                            }
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label"></label>
+                                <input required asp-for="Name" class="form-control updateLetter" type="text" id="nameClear" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Surname" class="control-label"></label>
+                                <input required asp-for="Surname" class="form-control updateLetter" type="text" />
+                                <span asp-validation-for="Surname" class="text-danger"></span>
+                            </div>
+
+                            @if (TempData["IsImage"] != null)
+                            {
+                                <div class="alert alert-danger alert-dismissible" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <strong>@TempData["IsImage"].ToString()</strong>
+                                </div>
+                            }
+                            <!-- #region Dnone's -->
+                            <div class="form-group d-none">
+                                <label asp-for="SuperAdminID" class="control-label"></label>
+                                <input asp-for="SuperAdminID" class="form-control"></>
+                                <span asp-validation-for="SuperAdminID" class="text-danger"></span>
+                            </div>
+                            <div class="form-group d-none">
+                                <label asp-for="Status" class="control-label"></label>
+                                <input asp-for="Status" class="form-control" />
+                                <span asp-validation-for="Status" class="text-danger"></span>
+                            </div>
+                            <div class="form-group d-none">
+                                <label asp-for="Role" class="control-label"></label>
+                                <input asp-for="Role" class="form-control" />
+                                <span asp-validation-for="Role" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group d-none">
+                                <label asp-for="Password" class="control-label"></label>
+                                <input asp-for="Password" class="form-control" />
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                            <div class="form-group d-none">
+                                <label asp-for="ErrorLogin" class="control-label"></label>
+                                <input asp-for="ErrorLogin" class="form-control" />
+                                <span asp-validation-for="ErrorLogin" class="text-danger"></span>
+                            </div>
+
+                            <!-- #endregion -->
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <input type="submit" class="btn btn-outline-success" value="Kaydet" />
+                                        <!-- #region Modal -->
+
+                                    </div>
+                                    <div class="col-4">
+                                        <div>
+                                            <a class="btn btn-outline-primary" asp-area="SuperAdministator" asp-controller="Home" asp-action="Index">Geri Dön</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- #endregion -->
+                            </div>
+
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</main>

@@ -1,0 +1,76 @@
+﻿@model IEnumerable<PropTabTabIK.Entities.Entities.CompanyAdmin>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+<main>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                @*<div class="card">*@
+                <h1>Liste</h1>
+                <nav class="breadcrumb-container d-none d-sm-block d-lg-inline-block float-right" aria-label="breadcrumb">
+                    <ol class="breadcrumb pt-0">
+                        <li class="breadcrumb-item">
+                            <p><a asp-controller="Crud" asp-action="CreateCompanyAdmin">Yeni Şirket Ekle</a></p>
+                        </li>
+
+                        <li class="breadcrumb-item active" aria-current="page">Data</li>
+                    </ol>
+                </nav>
+                <div class="separator mb-5"></div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CompanyName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.CompanyLogo)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Email)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CompanyName)
+                                </td>
+
+                                @if (item.ProfilPicture == "" || item.ProfilPicture == null)
+                                {
+                                    <td align="center"> <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" style="width:80px;height:80px;" /></td>
+                                }
+                                else
+                                {
+                                    <td><img src="@Html.DisplayFor(modelItem => item.CompanyLogo)" style="width:80px;height:80px"></td>
+                                }
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Email)
+                                </td>
+                                <td>
+
+                                    <a asp-action="Update" asp-controller="Crud" asp-route-id="@item.ID">Edit</a> |
+                                    <a asp-action="Delete" asp-controller="Crud" asp-route-id="@item.ID">Delete</a>
+
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+            @*</div>*@
+        </div>
+    </div>
+</main>
